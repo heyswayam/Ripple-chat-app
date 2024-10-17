@@ -32,6 +32,15 @@ const userSchema = new Schema(
         },
         refreshToken:{
             type:String
+        },
+        profilePhoto:{
+            type:String,
+            default:""
+        },
+        gender:{
+            type:String,
+            enum:["male", "female"],
+            required:true
         }
     },
     {

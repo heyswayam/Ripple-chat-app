@@ -29,9 +29,10 @@ const generateAccessTokenandRefreshToken = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
     // console.log(req.body);
-    const { username, fullname, email, password } = req.body;
+    const { username, fullname, email, password,gender } = req.body;
 
-
+    const maleProfilePhoto = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+    const femaleProfilePhoto = `https://avatar.iran.liara.run/public/girl?username=${username}`;
     ///// check if user already exists
     const existedUser = await User.findOne({
         $or: [{ username }, { email }],
@@ -50,6 +51,8 @@ const registerUser = asyncHandler(async (req, res) => {
         fullname,
         email,
         password,
+        profilePhoto: gender === "male" ? maleProfilePhoto : femaleProfilePhoto,
+        gender
     });
     const createdUser = await User.findById(userInstance._id).select(
         '-password '

@@ -1,24 +1,54 @@
+import express from "express";
+import http from "http";
+import { Server } from "socket.io";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express from "express";
 import { UserRoute } from "./routes/user.routes.js";
+import { MessageRoute } from "./routes/message.routes.js";
 
 const app = express();
-app.use(cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true
-}))
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+        methods: ["GET", "POST"],
+        credentials: true,
+    },
+});
 
-//BASIC CONFIGS
-// to limit data not to crash server
-app.use(express.json({limit: "16kb"}))
-//converts sentence to url like space to %20 or +
-// app.use(express.urlencoded({extended: true, limit: "16kb"}))
-//helps accessing files from public folder
-app.use(express.static("public"))
-app.use(cookieParser())
+// Middleware
+app.use(
+    cors({
+        origin: process.env.CORS_ORIGIN,
+        credentials: true,
+    }),
+);
+app.use(express.json({ limit: "16kb" }));
+app.use(express.static("public"));
+app.use(cookieParser());
 
+// Routes
+app.use("/users", UserRoute);
+app.use("/messages", MessageRoute);
 
-//ROUTES DECLARATION
-app.use("/users",UserRoute);
-export {app}
+// Socket.IO logic
+const userSocketMap = {}; // {userId: socketId}
+
+export const getReceiverSocketId = (receiverId) => {
+    return userSocketMap[receiverId];
+};
+
+io.on("connection", (user) => {
+    const userId = user.handshake.query.userId;
+    if (userId !== undefined) {
+        userSocketMap[userId] = user.id;
+    }
+    io.emit("getOnlineUsers", Object.keys(userSocketMap));
+
+    user.on("disconnect", () => {
+        delete userSocketMap[userId];
+        io.emit("getOnlineUsers", Object.keys(userSocketMap));
+    });
+});
+
+export { app, io, server };
