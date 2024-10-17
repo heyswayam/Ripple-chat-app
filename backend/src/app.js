@@ -1,6 +1,7 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
+import { UserRoute } from "./routes/user.routes.js";
 
 const app = express();
 app.use(cors({
@@ -19,5 +20,5 @@ app.use(cookieParser())
 
 
 //ROUTES DECLARATION
-
+app.use("/users",UserRoute);
 export {app}

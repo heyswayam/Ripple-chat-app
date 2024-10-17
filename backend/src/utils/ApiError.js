@@ -1,5 +1,3 @@
-import { constructor } from "assert"
-
 class ApiError extends Error{
     constructor(statuscode,message="some error from ApiError.js",errors=[],stack=""){
          // Must call super constructor in derived class before accessing 'this' or returning from derived constructor
