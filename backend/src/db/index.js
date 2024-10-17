@@ -1,9 +1,9 @@
 import mongoose from "mongoose"
-import { DB_NAME } from "../constants.js"
+
 
 const connectDB = async()=>{
     try {
-        const instance = await mongoose.connect(`${process.env.MONGODB_URL}${DB_NAME}`)
+        const instance = await mongoose.connect(`${process.env.MONGODB_URL}ripple-chat-app`)
         console.log(`mongoDB connected !! DB HOST:`,instance.connection.host);
         
     } catch (error) {
@@ -11,6 +11,4 @@ const connectDB = async()=>{
         process.exit(1);
     }
 }
-export default connectDB;import { log } from "console";
-import { connect } from "http2";
-import { env, exit } from "process";
+export default connectDB;
