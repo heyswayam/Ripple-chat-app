@@ -1,29 +1,30 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 import axios from "axios";
-import {useSelector,useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setMessages } from '../context/messageSlice';
-// import { BASE_URL } from '..';
 import conf_env from '../conf_env/conf_env';
 
-
-
-const useGetMessages = () => {
-    const {selectedUser} = useSelector(store=>store.user);
+const UseGetMessages = () => {
+    const { selectedUser,authUserData } = useSelector(store => store.user);
     const dispatch = useDispatch();
+
     useEffect(() => {
         const fetchMessages = async () => {
             try {
+                const senderId = authUserData?._id;
+                const receiverId = selectedUser?._id;
                 axios.defaults.withCredentials = true;
-                const res = await axios.get(`${conf_env.backendURL}/message/${selectedUser?._id}`);
+                const res = await axios.get(`${conf_env.backendURL}/message/get/${senderId}/${receiverId}`);
                 dispatch(setMessages(res.data.data));
-                // console.log(res.data.data);
-                
             } catch (error) {
-                console.log(error);
+                console.log(error.response.data);
+                // dispatch(setMessages([]));
             }
         }
-        fetchMessages();
-    }, [selectedUser?._id,setMessages]);
+        if (selectedUser) {
+            fetchMessages();
+        }
+    }, [selectedUser, dispatch]);
 }
 
-export default useGetMessages
+export default UseGetMessages;

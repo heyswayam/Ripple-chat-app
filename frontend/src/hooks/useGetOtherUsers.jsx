@@ -5,7 +5,7 @@ import { setOtherUsers } from '../context/userSlice';
 import conf_env from '../conf_env/conf_env';
 // import { BASE_URL } from '..';
 
-const useGetOtherUsers = () => {
+const UseGetOtherUsers = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -25,5 +25,5 @@ const useGetOtherUsers = () => {
 
 }
 
-export default useGetOtherUsers;
+export default UseGetOtherUsers;
 

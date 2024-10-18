@@ -5,29 +5,21 @@ const userSlice = createSlice({
 	initialState: {
 		authStatus: false,
 		authUserData: null,
-
-
-		authUser: null,
 		otherUsers: null,
 		selectedUser: null,
 		onlineUsers: null,
 	},
 	reducers: {
 		login: (state, action) => {
-            state.authStatus = true;
-            state.authUserData = action.payload;
-
-        },
-        logout: (state) => {
-            state.authStatus = false;
-            state.authUserData = null;
-
-        },
-
-//setAuthUser not required
-		setAuthUser: (state, action) => {
-			state.authUser = action.payload;
+			state.authStatus = true;
+			state.authUserData = action.payload;
 		},
+		logout: (state) => {
+			state.authStatus = false;
+			state.authUserData = null;
+		},
+
+		//setAuthUser not required
 		setOtherUsers: (state, action) => {
 			state.otherUsers = action.payload;
 		},
@@ -39,6 +31,6 @@ const userSlice = createSlice({
 		},
 	},
 });
-export const { setAuthUser, setOtherUsers, setSelectedUser, setOnlineUsers,login,logout } = userSlice.actions;
+export const { setOtherUsers, setSelectedUser, setOnlineUsers, login, logout } = userSlice.actions;
 // export const {	login,logout } = userSlice.actions;
 export default userSlice.reducer;

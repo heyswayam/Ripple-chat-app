@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "sonner";
 import {useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
-import { setAuthUser, setOtherUsers, setSelectedUser,logout } from '../context/userSlice';
+import { setOtherUsers, setSelectedUser,logout } from '../context/userSlice';
 import { setMessages } from '../context/messageSlice';
 import OtherUserList from './OtherUserList';
 import conf_env from '../conf_env/conf_env';
@@ -22,8 +22,7 @@ const Sidebar = () => {
             navigate("/signin");
             dispatch(logout());
             toast.success(res.data.message);
-            dispatch(setAuthUser(null));
-            dispatch(setMessages(null));
+            dispatch(setMessages([]));
             dispatch(setOtherUsers(null));
             dispatch(setSelectedUser(null));
         } catch (error) {
@@ -32,7 +31,7 @@ const Sidebar = () => {
     }
     const searchSubmitHandler = (e) => {
         e.preventDefault();
-        const conversationUser = otherUsers?.find((user)=> user.fullName.toLowerCase().includes(search.toLowerCase()));
+        const conversationUser = otherUsers?.find((user)=> user.fullname.toLowerCase().includes(search.toLowerCase()));
         if(conversationUser){
             dispatch(setOtherUsers([conversationUser]));
         }else{
