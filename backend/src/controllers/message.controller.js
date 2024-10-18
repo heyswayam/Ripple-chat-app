@@ -5,52 +5,77 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User } from "../models/user.model.js";
+import mongoose from "mongoose";
 
 export const sendMessage = asyncHandler(async (req, res) => {
     const { senderId, receiverId } = req.params;
     const { message } = req.body;
 
-    // Verify that the senderId exists and is a valid user
-    const sender = await User.findById(senderId);
-    if (!sender) {
-        throw new ApiError(404, "Sender not found");
+    // Verify that the senderId and receiverId exist and are valid users
+    const [sender, receiver] = await Promise.all([
+        User.findById(senderId),
+        User.findById(receiverId)
+    ]);
+
+    if (!sender || !receiver) {
+        throw new ApiError(404, "One or both users not found");
     }
 
-    // Verify that the receiverId exists and is a valid user
-    const receiver = await User.findById(receiverId);
-    if (!receiver) {
-        throw new ApiError(404, "Receiver not found");
-    }
-
-    let gotChatgroup = await Chatgroup.findOne({
-        participants: { $all: [senderId, receiverId] },
-    });
-
-    if (!gotChatgroup) {
-        gotChatgroup = await Chatgroup.create({
-            participants: [senderId, receiverId],
-        });
-    }
-
-    const newMessage = await Message.create({
+    // Create a temporary message object
+    const tempMessage = {
+        _id: new mongoose.Types.ObjectId().toString(), // Generate a temporary ID
         senderId,
         receiverId,
         message,
-    });
+        createdAt: new Date(),
+        updatedAt: new Date()
+    };
 
-    if (newMessage) {
-        gotChatgroup.messages.push(newMessage._id);
-    }
-
-    await Promise.all([gotChatgroup.save(), newMessage.save()]);
-
-    // SOCKET IO
+    // Emit the message via Socket.IO immediately
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
-        io.to(receiverSocketId).emit("newMessage", newMessage);
+        io.to(receiverSocketId).emit("newMessage", tempMessage);
     }
 
-    return res.status(201).json(new ApiResponse(201, newMessage, "Message sent successfully"));
+    // Send immediate response
+    res.status(201).json(new ApiResponse(201, tempMessage, "Message sent successfully"));
+
+    // Perform database operations asynchronously
+    (async () => {
+        try {
+            let chatgroup = await Chatgroup.findOne({
+                participants: { $all: [senderId, receiverId] },
+            });
+
+            if (!chatgroup) {
+                chatgroup = await Chatgroup.create({
+                    participants: [senderId, receiverId],
+                });
+            }
+
+            const newMessage = await Message.create(tempMessage);
+
+            chatgroup.messages.push(newMessage._id);
+            await chatgroup.save();
+
+            // Optionally, emit a confirmation event with the saved message ID
+            if (receiverSocketId) {
+                io.to(receiverSocketId).emit("messageConfirmed", {
+                    tempId: tempMessage._id,
+                    savedId: newMessage._id
+                });
+            }
+        } catch (error) {
+            console.error("Error in async database operations:", error);
+            // Optionally, emit an error event to inform the client
+            if (receiverSocketId) {
+                io.to(receiverSocketId).emit("messageError", {
+                    tempId: tempMessage._id,
+                    error: "Failed to save message"
+                });
+            }
+        }
+    })();
 });
 
 export const getMessage = asyncHandler(async (req, res) => {
