@@ -28,7 +28,7 @@ function Signin() {
 	const onSubmit = async (data) => {
 		dispatch(setLoader(true));
 		try {
-			const res = await axios.post(`http://localhost:8100/users/login`, data, {
+			const res = await axios.post(`${conf_env.backendURL}/user/login`, data, {
 				headers: {
 					"Content-Type": "application/json",
 				},
@@ -37,6 +37,7 @@ function Signin() {
 			dispatch(login(res.data.data.user));
 			toast.success("Signin successful!");
 			console.log(res.data.data);
+			navigate("/chat");
 		} catch (error) {
 			console.error("Response error:", error.response.data);
 

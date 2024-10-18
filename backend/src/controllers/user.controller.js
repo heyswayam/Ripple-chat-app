@@ -158,4 +158,16 @@ const changePassword = asyncHandler(async (req, res) => {
 	return res.status(200).json(new ApiResponse(200, {}, "password changed successfully"));
 });
 
-export { registerUser, loginUser, logoutUser, updateRefreshandAccessToken, changePassword, getCurrUser };
+const getOtherUsers = asyncHandler(async (req, res) => {
+    try {
+        const loggedInUserId = req.user._id;
+        const otherUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
+        return res.status(200).json(new ApiResponse(200, otherUsers,"successfully fetched other users"));
+    } catch (error) {
+        console.log(error);
+        throw new ApiError(500, "Error fetching other users");
+    }
+});
+
+
+export { registerUser, loginUser, logoutUser, updateRefreshandAccessToken, changePassword, getCurrUser,getOtherUsers };

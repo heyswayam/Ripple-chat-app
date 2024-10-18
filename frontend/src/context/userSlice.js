@@ -5,10 +5,12 @@ const userSlice = createSlice({
 	initialState: {
 		authStatus: false,
 		authUserData: null,
-		// authUser: null,
-		// otherUsers: null,
-		// selectedUser: null,
-		// onlineUsers: null,
+
+
+		authUser: null,
+		otherUsers: null,
+		selectedUser: null,
+		onlineUsers: null,
 	},
 	reducers: {
 		login: (state, action) => {
@@ -21,20 +23,22 @@ const userSlice = createSlice({
             state.authUserData = null;
 
         },
-		// setAuthUser: (state, action) => {
-		// 	state.authUser = action.payload;
-		// },
-		// setOtherUsers: (state, action) => {
-		// 	state.otherUsers = action.payload;
-		// },
-		// setSelectedUser: (state, action) => {
-		// 	state.selectedUser = action.payload;
-		// },
-		// setOnlineUsers: (state, action) => {
-		// 	state.onlineUsers = action.payload;
-		// },
+
+//setAuthUser not required
+		setAuthUser: (state, action) => {
+			state.authUser = action.payload;
+		},
+		setOtherUsers: (state, action) => {
+			state.otherUsers = action.payload;
+		},
+		setSelectedUser: (state, action) => {
+			state.selectedUser = action.payload;
+		},
+		setOnlineUsers: (state, action) => {
+			state.onlineUsers = action.payload;
+		},
 	},
 });
-// export const { setAuthUser, setOtherUsers, setSelectedUser, setOnlineUsers,login,logout } = userSlice.actions;
-export const {	login,logout } = userSlice.actions;
+export const { setAuthUser, setOtherUsers, setSelectedUser, setOnlineUsers,login,logout } = userSlice.actions;
+// export const {	login,logout } = userSlice.actions;
 export default userSlice.reducer;

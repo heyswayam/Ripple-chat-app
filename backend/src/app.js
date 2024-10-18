@@ -28,8 +28,8 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // Routes
-app.use("/users", UserRoute);
-app.use("/messages", MessageRoute);
+app.use("/user", UserRoute);
+app.use("/message", MessageRoute);
 
 // Socket.IO logic
 const userSocketMap = {}; // {userId: socketId}
