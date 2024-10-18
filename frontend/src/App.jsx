@@ -1,12 +1,16 @@
 import { useState } from "react";
 import "./App.css";
 
+import { Toaster } from "sonner";
+import { Outlet } from "react-router-dom";
+
 function App() {
 	const [count, setCount] = useState(0);
 
 	return (
 		<>
-			<div className='bg-green-500'>Hello</div>
+		<Toaster expand={true} richColors closeButton={true} />
+			<Outlet/>
 		</>
 	);
 }

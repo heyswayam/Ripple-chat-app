@@ -1,3 +1,105 @@
+/* @import url('https://fonts.googleapis.com/css?family=Bebas%20Neue:700|PT%20Sans%20Caption:400'); */
+@import url('https://fonts.googleapis.com/css?family=Suwannaphum:700|Suwannaphum:400');
+@import url('https://fonts.googleapis.com/css2?family=Acme&family=Caveat:wght@400..700&display=swap');
+
+h1 {font-size: 3.053rem !important; /* 48.8px */}
+
+h2 {font-size: 2.442rem !important; /* 39.04px */}
+
+h3 {font-size: 1.954rem !important; /* 31.2px */}
+
+h4 {font-size: 1.563rem !important; /* 24.96px */}
+
+h5 {font-size: 1.250rem !important; /* 20px */}
+@layer base {
+  :root {
+    --text: #120b28;
+    --background: #f1eef6;
+    --primary: #301877;
+    --secondary: #a585ef;
+    --accent: #72bf6e;
+  }
+  .dark {
+    --text: #ded7f4;
+    --background: #0b0810;
+    --primary: #a088e7;
+    --secondary: #30107a;
+    --accent: #449140;
+  }
+  .hidden-radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .link-with-underline {
+    position: relative;
+    color: #655c6a; /* text-gray-500 */
+    transition: color 0.3s;
+  }
+  
+  .link-with-underline:hover,
+  .link-with-underline.active {
+    color: rgb(152, 111, 218);  /* text-gray-500/75 */
+  }
+  
+  .link-with-underline::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -8px;
+    left: 50%;
+    background-color: currentColor;
+    transition: width 0.3s ease, left 0.3s ease;
+  }
+  
+  .link-with-underline:hover::after,
+  .link-with-underline.active::after {
+    width: 100%;
+    left: 0;
+  }
+
+  /* Add styles for dark mode */
+  .dark .link-with-underline {
+    color: #ffffff; /* dark:text-white */
+  }
+
+  .dark .link-with-underline:hover,
+  .dark .link-with-underline.active {
+    color: rgb(188, 157, 237); 
+  }
+}
+@layer components {
+  .nav-link {
+    @apply text-gray-500 dark:text-white transition-colors duration-300 relative;
+  }
+
+  .nav-link:hover {
+    @apply text-gray-500/75 dark:text-white/75;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-[-4px] left-0 w-full h-[2px] bg-current transform scale-x-0 origin-bottom-right transition-transform duration-300 ease-out;
+  }
+
+  .nav-link:hover::after {
+    @apply scale-x-100 origin-bottom-left;
+  }
+
+  .nav-link.active {
+    @apply text-[rgb(189,170,219)];
+  }
+
+  .nav-link.active::after {
+    @apply scale-x-100;
+  }
+}
+
+
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
