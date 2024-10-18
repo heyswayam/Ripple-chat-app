@@ -18,7 +18,7 @@ const UseGetMessages = () => {
                 dispatch(setMessages(res.data.data));
             } catch (error) {
                 console.log(error.response.data);
-                // dispatch(setMessages([]));
+                dispatch(setMessages([]));
             }
         }
         if (selectedUser) {

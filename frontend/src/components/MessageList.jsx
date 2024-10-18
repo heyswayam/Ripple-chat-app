@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import UseGetRealTimeMessage from "../hooks/useGetRealTimeMessage";
 
 
+
 const MessageList = () => {
 	UseGetMessages();
 	UseGetRealTimeMessage();
@@ -16,7 +17,9 @@ const MessageList = () => {
                     <Message key={message._id} message={message} />
                 ))
             ) : (
-                <p>No messages yet.</p>
+                <div className="flex items-center justify-center h-full">
+    <p className="text-gray-500 text-lg italic">No messages yet.</p>
+</div>
             )}
         </div>
 	);

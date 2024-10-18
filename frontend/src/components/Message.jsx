@@ -2,26 +2,30 @@ import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 
 const Message = ({ message }) => {
-	const scroll = useRef();
-	const { authUserData, selectedUser } = useSelector((store) => store.user);
+    const scroll = useRef();
+    const { authUserData } = useSelector((store) => store.user);
 
-	useEffect(() => {
-		scroll.current?.scrollIntoView({ behavior: "smooth" });
-	}, [message]);
+    useEffect(() => {
+        scroll.current?.scrollIntoView({ behavior: "smooth" });
+    }, [message]);
 
-	return (
-		<div ref={scroll} className={`flex flex-col ${message?.senderId === authUserData?._id ? "items-end" : "items-start"}`}>
-			<div className='chat-image avatar'>
-				<div className='w-10 rounded-full'>
-					<img alt='Tailwind CSS chat bubble component' src={message?.senderId === authUserData?._id ? authUserData?.profilePhoto : selectedUser?.profilePhoto} />
-				</div>
-			</div>
-			<div className='chat-header'>
-				<time className='text-xs opacity-50 text-white'>12:45</time>
-			</div>
-			<div className={`chat-bubble ${message?.senderId !== authUserData?._id ? "bg-gray-300 text-black" : "bg-blue-200 text-black"} `}>{message?.message}</div>
-		</div>
-	);
+    const isSender = message?.senderId === authUserData?._id;
+
+    return (
+        <div ref={scroll} className={`flex ${isSender ? "justify-end" : "justify-start"} mb-2  `}>
+
+				
+            <div className={`max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl p-2 rounded-lg ${isSender ? "bg-blue-600 text-white" : "bg-gray-300 text-black"} shadow-md`}>
+                <div className='text-sm'>
+                    {message?.message}
+                </div>
+                <div className='text-xs text-right opacity-70 mt-1'>
+                    <time>{new Date(message?.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</time>
+                </div>
+            </div>
+
+        </div>
+    );
 };
 
 export default Message;
