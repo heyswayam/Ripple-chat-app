@@ -2,14 +2,14 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from '../context/userSlice';
 
-const OtherUser = ({ user }) => {
+const OtherUser = ({ user, onChatClick }) => {
     const dispatch = useDispatch();
     const { selectedUser, onlineUsers } = useSelector(store => store.user);
     const isOnline = onlineUsers?.includes(user._id);
 
     const selectedUserHandler = (user) => {
-        console.log("Selecting user:", user);
         dispatch(setSelectedUser(user));
+        onChatClick();
     };
 
     return (

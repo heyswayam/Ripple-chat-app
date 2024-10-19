@@ -28,9 +28,10 @@ function AuthLayout({ children }) {
 
         checkAuth();
     }, [dispatch]);
-
+    
+    // TODO: remove the location.pathname==="/" condition when you have a home page
     useEffect(() => {
-        if (!authStatus && (location.pathname === "/chat" || location.pathname==="")) navigate("/signin");
+        if (!authStatus && (location.pathname === "/chat" || location.pathname==="/")) navigate("/signin");
         if (authStatus && (location.pathname === "/signin" || location.pathname === "/signup" || location.pathname==="/")) navigate("/chat");
     }, [authStatus, navigate, location.pathname]);
 
