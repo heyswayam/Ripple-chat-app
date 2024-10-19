@@ -1,18 +1,23 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addMessage, setMessages } from "../context/messageSlice";
-import useGetRealTimeMessage from "./useGetRealTimeMessage";
+import { addMessageToConversation } from "../context/messageSlice";
 
 const UseGetRealTimeMessage = () => {
     const { socket } = useSelector(store => store.socket);
+    const { authUserData } = useSelector(store => store.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
         socket?.on("newMessage", (newMessage) => {
-            // dispatch(setMessages(prevMessages => [...prevMessages, newMessage]));
-            dispatch(addMessage(newMessage));
+            const conversationUserId = newMessage.senderId === authUserData._id 
+                ? newMessage.receiverId 
+                : newMessage.senderId;
+            
+            dispatch(addMessageToConversation({ 
+                userId: conversationUserId, 
+                message: newMessage 
+            }));
             console.log(newMessage);
-            console.log("hello")
         });
         return () => socket?.off("newMessage");
     }, [socket, dispatch]);

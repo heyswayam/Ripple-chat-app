@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setOtherUsers, setSelectedUser, logout } from "../context/userSlice";
-import { setMessages } from "../context/messageSlice";
+import { setConversation} from "../context/messageSlice";
 import OtherUserList from "./OtherUserList";
 import conf_env from "../conf_env/conf_env";
 
@@ -21,7 +21,8 @@ const Sidebar = ({ onChatClick }) => {
 			navigate("/signin");
 			dispatch(logout());
 			toast.success(res.data.message);
-			dispatch(setMessages([]));
+			// dispatch(setMessages([]));
+			dispatch(setConversation({ userId: [], messages: [] }));
 			dispatch(setOtherUsers(null));
 			dispatch(setSelectedUser(null));
 		} catch (error) {
