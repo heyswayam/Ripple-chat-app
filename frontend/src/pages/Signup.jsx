@@ -27,7 +27,7 @@ function Signup() {
     const onSubmit = async (data) => {
         dispatch(setLoader(true));
         try {
-            const res = await axios.post(`http://localhost:8100/user/register`, data, {
+            const res = await axios.post(`${conf_env.backendURL}/user/register`, data, {
                 headers: {
                     "Content-Type": "application/json",
                 },
