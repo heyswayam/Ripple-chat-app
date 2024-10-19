@@ -12,45 +12,48 @@ import Home from "./pages/Home.jsx";
 import AuthLayout from "./components/AuthLayout.jsx";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <App />,
-        children: [
-            {
-                path: "/signin",
-                element: (
-                    <AuthLayout>
-                        <Signin />
-                    </AuthLayout>
-                ),
-            },
-            {
-                path: "/signup",
-                element: (
-                    <AuthLayout>
-                        <Signup/>
-                    </AuthLayout>
-                ),
-            },
-            {
-                path: "/chat",
-                element: (
-                    <AuthLayout>
-                        <Chat/>
-                    </AuthLayout> 
-                ),
-                
-            },
-            {
-                path: "/",
-                element: <Home />,
-            },
-        ],
-    },
+	{
+		path: "/",
+		element: <App />,
+		children: [
+			{
+				path: "/signin",
+				element: (
+					<AuthLayout>
+						<Signin />
+					</AuthLayout>
+				),
+			},
+			{
+				path: "/signup",
+				element: (
+					<AuthLayout>
+						<Signup />
+					</AuthLayout>
+				),
+			},
+			{
+				path: "/chat",
+				element: (
+					<AuthLayout>
+						<Chat />
+					</AuthLayout>
+				),
+			},
+			{
+				path: "/",
+				element: (
+					<AuthLayout>
+						<Home />
+					</AuthLayout>
+				),
+			},
+		],
+	},
 ]);
 
 createRoot(document.getElementById("root")).render(
-    <Provider store={store}>
-        <RouterProvider router={router} />
-    </Provider>
+	<Provider store={store}>
+		<RouterProvider router={router} />
+	</Provider>,
 );

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { registerUser, loginUser, logoutUser, updateRefreshandAccessToken,changePassword, getOtherUsers } from '../controllers/user.controller.js';
+import { registerUser, loginUser, logoutUser, updateRefreshandAccessToken,changePassword, getOtherUsers ,checkAuthStatus} from '../controllers/user.controller.js';
 import { verifyJWTToken } from '../middleware/auth.middleware.js';
 import { User } from '../models/user.model.js';
 
@@ -16,6 +16,7 @@ UserRoute.route('/logout').post(verifyJWTToken,logoutUser)
 
 UserRoute.route('/refresh-token').post(verifyJWTToken,updateRefreshandAccessToken);
 
+UserRoute.route("/check-auth").get(verifyJWTToken, checkAuthStatus); // simillar to /get-user i think
 UserRoute.route('/change-password').post(verifyJWTToken,changePassword);
 UserRoute.route('/other-users').get(verifyJWTToken, getOtherUsers);
 export {UserRoute};

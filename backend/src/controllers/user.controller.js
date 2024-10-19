@@ -168,6 +168,12 @@ const getOtherUsers = asyncHandler(async (req, res) => {
         throw new ApiError(500, "Error fetching other users");
     }
 });
+const checkAuthStatus = asyncHandler(async (req, res) => {
+    // If this middleware is reached, it means the token is valid
+    const user = await User.findById(req.user._id).select('-password -refreshToken');
+    return res.status(200).json(
+        new ApiResponse(200, { user }, "User is authenticated")
+    );
+});
 
-
-export { registerUser, loginUser, logoutUser, updateRefreshandAccessToken, changePassword, getCurrUser,getOtherUsers };
+export { registerUser, loginUser, logoutUser, updateRefreshandAccessToken, changePassword, getCurrUser,getOtherUsers,checkAuthStatus };
