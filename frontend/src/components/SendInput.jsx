@@ -9,8 +9,7 @@ const SendInput = () => {
     const { authUserData, selectedUser } = useSelector(store => store.user);
     const dispatch = useDispatch();
 
-    const onSubmitHandler = async (e) => {
-        e.preventDefault();
+    const sendMessage = async () => {
         if (!message.trim() || !selectedUser) return;
 
         try {
@@ -30,7 +29,6 @@ const SendInput = () => {
             }));
 
             // Optionally, we can also add the message to the sender's conversation view
-            // This is useful if we want to show sent messages immediately in the sender's view
             dispatch(addMessageToConversation({ 
                 userId: senderId, 
                 message: newMessage 
@@ -41,6 +39,16 @@ const SendInput = () => {
             // Optional, add error handling UI 
         }
         setMessage("");
+    };
+
+    const onSubmitHandler = (e) => {
+        e.preventDefault();
+        sendMessage();
+    };
+
+    const onClickHandler = (e) => {
+        e.preventDefault();
+        sendMessage();
     };
 
     return (
@@ -54,7 +62,8 @@ const SendInput = () => {
                     disabled={!selectedUser}
                 />
                 <button 
-                    type='submit' 
+                    type='button' 
+                    onClick={onClickHandler}
                     className='btn bg-blue-600 hover:bg-blue-700 text-white absolute right-0 top-0 h-full rounded-r-full px-4'
                     disabled={!selectedUser || !message.trim()}
                 >
@@ -66,4 +75,3 @@ const SendInput = () => {
 };
 
 export default SendInput;
-
