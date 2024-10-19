@@ -4,7 +4,8 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import jwt from 'jsonwebtoken';
 const verifyJWTToken = asyncHandler(async (req, res, next) => {
     try {
-        const accessToken = req.cookies?.accessToken;
+        const accessToken = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
+        ;
         if (!accessToken) throw new ApiError(500, 'wrong access token or User is not logged in');
 
         const data = await jwt.verify(
