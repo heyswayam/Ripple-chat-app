@@ -57,14 +57,7 @@ export const sendMessage = asyncHandler(async (req, res) => {
 
             chatgroup.messages.push(newMessage._id);
             await chatgroup.save();
-
-            // Optionally, emit a confirmation event with the saved message ID
-            if (receiverSocketId) {
-                io.to(receiverSocketId).emit("messageConfirmed", {
-                    tempId: tempMessage._id,
-                    savedId: newMessage._id
-                });
-            }
+            
         } catch (error) {
             console.error("Error in async database operations:", error);
             // Optionally, emit an error event to inform the client
