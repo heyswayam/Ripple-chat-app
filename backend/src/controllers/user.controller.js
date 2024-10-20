@@ -179,4 +179,8 @@ const checkAuthStatus = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser, loginUser, logoutUser, updateRefreshandAccessToken, changePassword, getCurrUser,getOtherUsers,checkAuthStatus };
+const cronJob = asyncHandler(async (req, res) => {
+	return res.status(200).json(new ApiResponse(200, {}, "Endpoint for cron job"));
+});
+
+export { registerUser, loginUser, logoutUser, updateRefreshandAccessToken, changePassword, getCurrUser,getOtherUsers,checkAuthStatus,cronJob };

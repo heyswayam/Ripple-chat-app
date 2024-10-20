@@ -8,7 +8,7 @@ import { MessageRoute } from "./routes/message.routes.js";
 import dotenv from "dotenv";
 import { log } from "console";
 dotenv.config({ path: "../.env" });
-
+import { cronJob } from "./controllers/user.controller.js";
 // console.log('CORS_ORIGIN:', process.env.CORS_ORIGIN);
 const app = express();
 const server = http.createServer(app);
@@ -28,6 +28,7 @@ app.use(cookieParser());
 // Routes
 app.use("/user", UserRoute);
 app.use("/message", MessageRoute);
+app.get("/", cronJob);
 
 // Socket.IO logic
 const io = new Server(server, {
