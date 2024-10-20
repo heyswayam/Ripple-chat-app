@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { setConversation } from "../context/messageSlice";
 import conf_env from "../conf_env/conf_env";
+import { setLoader } from "../context/loaderSlice";
 
 const UseGetMessages = () => {
 	const { selectedUser, authUserData } = useSelector((store) => store.user);
@@ -22,12 +23,15 @@ const UseGetMessages = () => {
 
 			if (isFetchNeeded) {
 				try {
+					dispatch(setLoader(true));
 					axios.defaults.withCredentials = true;
 					const res = await axios.get(`${conf_env.backendURL}/message/get/${senderId}/${receiverId}`);
 					dispatch(setConversation({ userId: receiverId, messages: res.data.data }));
 				} catch (error) {
 					console.log(error.response.data);
 					dispatch(setConversation({ userId: receiverId, messages: [] }));
+				} finally {
+					dispatch(setLoader(false));
 				}
 			}
 		};

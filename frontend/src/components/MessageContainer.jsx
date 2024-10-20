@@ -18,15 +18,15 @@ const MessageContainer = ({ onBackClick }) => {
 								<img src={selectedUser?.profilePhoto} alt='user-profile' />
 							</div>
 						</div>
-						<div className='flex flex-col flex-1'>
-							<div className='flex justify-between gap-2'>
+						<div className='w-full'>
+							<div className='flex justify-between gap-2 items-center'>
 								<p className='text-lg font-semibold'>{selectedUser?.fullname}</p>
-								{isOnline && <span className='text-sm text-green-500'>Online</span>}
+								{isOnline && <div className='text-sm text-green-500'>Online</div>}
 							</div>
 						</div>
                         <button 
                             onClick={onBackClick} 
-                            className='sm:hidden p-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out transform hover:scale-105'
+                            className='sm:hidden p-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out transform hover:scale-105 w-full max-w-32'
                         >
                             Back to Chats
                         </button>

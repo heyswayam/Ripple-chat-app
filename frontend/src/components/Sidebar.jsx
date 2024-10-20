@@ -5,28 +5,33 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setOtherUsers, setSelectedUser, logout } from "../context/userSlice";
-import { setConversation} from "../context/messageSlice";
+import { setConversation } from "../context/messageSlice";
 import OtherUserList from "./OtherUserList";
 import conf_env from "../conf_env/conf_env";
+import { setLoader } from "../context/loaderSlice";
+import { PulseLoader } from "react-spinners";
 
 const Sidebar = ({ onChatClick }) => {
 	const [search, setSearch] = useState("");
 	const { otherUsers } = useSelector((store) => store.user);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
+	const loading = useSelector((store) => store.loading.loader);
 	const logoutHandler = async () => {
 		try {
+			dispatch(setLoader(true));
 			const res = await axios.post(`${conf_env.backendURL}/user/logout`);
 			navigate("/signin");
 			dispatch(logout());
-			toast.success(res.data.message);
+			toast.success("Logged out successfully");
 			// dispatch(setMessages([]));
 			dispatch(setConversation({ userId: [], messages: [] }));
 			dispatch(setOtherUsers(null));
 			dispatch(setSelectedUser(null));
 		} catch (error) {
 			console.log(error);
+		} finally {
+			dispatch(setLoader(false));
 		}
 	};
 
@@ -44,7 +49,7 @@ const Sidebar = ({ onChatClick }) => {
 			fetchAllUsers();
 		} else {
 			// Filter users based on search input
-			const filteredUsers = otherUsers?.filter((user) => user.fullname.toLowerCase().includes(search.toLowerCase()));
+			const filteredUsers = otherUsers?.filter((user) => user.username.toLowerCase().includes(search.toLowerCase()));
 			dispatch(setOtherUsers(filteredUsers));
 		}
 	}, [search, dispatch]);
@@ -57,7 +62,7 @@ const Sidebar = ({ onChatClick }) => {
 					onChange={(e) => setSearch(e.target.value)}
 					className='input input-bordered w-full bg-gray-700 text-white placeholder-gray-400 rounded-full pl-4 pr-10 transition-all duration-300 ease-in-out focus:ring-2 focus:ring-blue-500'
 					type='text'
-					placeholder='Search...'
+					placeholder='Search by username...'
 				/>
 			</div>
 			<div className='flex-1 overflow-auto'>
@@ -65,7 +70,14 @@ const Sidebar = ({ onChatClick }) => {
 			</div>
 			<div className='mt-4'>
 				<button onClick={logoutHandler} className='btn bg-red-600 hover:bg-red-700 text-white w-full rounded-full py-2 transition-all duration-300 ease-in-out'>
-					Logout
+					{loading === false ? (
+						"Logout"
+					) : (
+						<>
+							{" "}
+							Logging out <PulseLoader color='#f3f4f6' size={7} />
+						</>
+					)}
 				</button>
 			</div>
 		</div>

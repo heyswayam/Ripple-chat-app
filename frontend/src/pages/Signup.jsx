@@ -8,6 +8,7 @@ import logo from "../assets/logo.svg"; // Add your logo here
 import conf_env from "../conf_env/conf_env.js";
 import api from "../utils/api.js"; // Import the configured axios instance
 import axios from "axios";
+import { PulseLoader } from "react-spinners";
 
 function Signup() {
     const dispatch = useDispatch();
@@ -149,8 +150,14 @@ function Signup() {
                     </div>
 
                     <button type='submit' className='w-full mt-8 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75' disabled={loading}>
-                        {loading ? "Signing up..." : "Sign up"}
-                    </button>
+						{loading ? (
+							<>
+								Signing up... <PulseLoader color='#f3f4f6' size={8} />
+							</>
+						) : (
+							"Sign up"
+						)}
+					</button>
                     <p className='mt-4 text-center text-sm text-gray-500 dark:text-gray-300'>
                         Already have an account?{" "}
                         <Link to='/signin' className='underline text-blue-600 dark:text-indigo-400'>

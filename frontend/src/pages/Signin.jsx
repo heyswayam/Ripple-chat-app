@@ -9,6 +9,7 @@ import conf_env from "../conf_env/conf_env.js";
 import api from "../utils/api.js"; // Import the configured axios instance
 import axios from "axios";
 import { login } from "../context/userSlice.js";
+import { PulseLoader, SyncLoader } from "react-spinners";
 
 function Signin() {
 	const dispatch = useDispatch();
@@ -47,7 +48,7 @@ function Signin() {
 		}
 	};
 
-	return (
+	return  (
 		<div className='min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900'>
 			<div className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md'>
 				<div className='text-center '>
@@ -92,7 +93,13 @@ function Signin() {
 						</span>
 					</div>
 					<button type='submit' className='w-full mt-8 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75' disabled={loading}>
-						{loading ? "Signing in..." : "Sign in"}
+						{loading ? (
+							<>
+								Signing in <PulseLoader color='#f3f4f6' size={8} />
+							</>
+						) : (
+							"Sign in"
+						)}
 					</button>
 					<p className='mt-4 text-center text-sm text-gray-500 dark:text-gray-300'>
 						Don't have an account?{" "}
@@ -103,7 +110,7 @@ function Signin() {
 				</form>
 			</div>
 		</div>
-	);
+	) 
 }
 
 export default Signin;
