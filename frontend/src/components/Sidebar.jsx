@@ -71,10 +71,10 @@ const Sidebar = ({ onChatClick }) => {
 			</div>
 			<div className='mt-4 flex items-center justify-between gap-4'>
 				<div className="flex items-center max-w-xs w-36 justify-between">
-				<img src={authUserData.profilePhoto} alt="User Avatar" className='w-10 h-10 rounded-full' />
+				<img src={authUserData?.profilePhoto} alt="User Avatar" className='w-10 h-10 rounded-full' />
 				<div className="flex flex-col mr-3">
-				<span className='text-white text-base font-medium'>{authUserData.fullname}</span>
-				<span className='text-white text-xs'> @{authUserData.username}</span>
+				<span className='text-white text-base font-medium'>{authUserData?.fullname}</span>
+				<span className='text-white text-xs'> @{authUserData?.username}</span>
 				</div>
 				</div>
 				<button onClick={logoutHandler} className='btn bg-red-600 hover:bg-red-700 text-white rounded-xl py-2 transition-all duration-300 ease-in-out w-fit px-4'>

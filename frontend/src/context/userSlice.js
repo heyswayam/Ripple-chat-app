@@ -13,12 +13,10 @@ const userSlice = createSlice({
 		login: (state, action) => {
 			state.authStatus = true;
 			state.authUserData = action.payload;
-			localStorage.setItem('authUserData', JSON.stringify(action.payload));
 		},
 		logout: (state) => {
 			state.authStatus = false;
 			state.authUserData = null;
-			localStorage.removeItem('authUserData');
 		},
 
 		//setAuthUser not required
@@ -34,5 +32,4 @@ const userSlice = createSlice({
 	},
 });
 export const { setOtherUsers, setSelectedUser, setOnlineUsers, login, logout } = userSlice.actions;
-// export const {	login,logout } = userSlice.actions;
 export default userSlice.reducer;
