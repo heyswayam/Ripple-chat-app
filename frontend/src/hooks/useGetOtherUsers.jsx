@@ -14,7 +14,7 @@ const UseGetOtherUsers = () => {
                 axios.defaults.withCredentials = true;
                 const res = await axios.get(`${conf_env.backendURL}/user/other-users`);
                 // store
-                console.log("other users -> ",res);
+                // console.log("other users -> ",res);
                 dispatch(setOtherUsers(res.data.data));
             } catch (error) {
                 console.log(error);

@@ -37,7 +37,7 @@ function Signin() {
 			});
 			dispatch(login(res.data.data.user));
 			toast.success("Signin successful!");
-			console.log(res.data.data);
+			// console.log(res.data.data);
 			navigate("/chat");
 		} catch (error) {
 			console.error("Response error:", error.response.data);

@@ -34,7 +34,7 @@ function Signup() {
                 },
                 withCredentials: true,
             });
-            console.log(res.data.data);
+            // console.log(res.data.data);
             // console.log(data);
             
             toast.success("Signup successful!");
