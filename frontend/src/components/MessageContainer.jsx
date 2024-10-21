@@ -26,9 +26,9 @@ const MessageContainer = ({ onBackClick }) => {
 						</div>
                         <button 
                             onClick={onBackClick} 
-                            className='sm:hidden p-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out transform hover:scale-105 w-full max-w-32'
+                            className='sm:hidden p-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out transform hover:scale-105  w-28'
                         >
-                            Back to Chats
+                            Back
                         </button>
 					</div>
 					<div className='flex-1 overflow-auto w-[98%] mx-auto'>
