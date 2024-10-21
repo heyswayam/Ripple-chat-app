@@ -13,13 +13,13 @@ import { PulseLoader } from "react-spinners";
 
 const Sidebar = ({ onChatClick }) => {
 	const [search, setSearch] = useState("");
+	const [loading, setLoading] = useState(false);
 	const { otherUsers } = useSelector((store) => store.user);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const loading = useSelector((store) => store.loading.loader);
 	const logoutHandler = async () => {
 		try {
-			dispatch(setLoader(true));
+			setLoading(true);
 			const res = await axios.post(`${conf_env.backendURL}/user/logout`);
 			navigate("/signin");
 			dispatch(logout());
@@ -31,7 +31,7 @@ const Sidebar = ({ onChatClick }) => {
 		} catch (error) {
 			console.log(error);
 		} finally {
-			dispatch(setLoader(false));
+			setLoading(false);
 		}
 	};
 
