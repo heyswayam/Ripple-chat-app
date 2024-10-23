@@ -48,25 +48,20 @@ function Signin() {
 		}
 	};
 
-	return  (
-		<div className='min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900'>
-			<div className='bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md'>
-				<div className='text-center '>
-					<p className='text-2xl text-gray-900 dark:text-white'>Welcome to Ripple</p>
-					<p className='text-gray-600 dark:text-gray-400 mt-5'>Sign in to continue</p>
+	return (
+		<div className='min-h-screen flex items-center justify-center bg-gray-900'>
+			<div className='bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md'>
+				<div className='text-center'>
+					<p className='text-2xl text-white'>Welcome to Ripple</p>
+					<p className='text-gray-400 mt-5'>Sign in to continue</p>
 				</div>
+
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className='relative mt-4'>
-						<input
-							{...register("email", { required: "Email is required" })}
-							type='email'
-							id='floating_email'
-							className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
-							placeholder=' '
-						/>
+						<input							{...register("email", { required: "Email is required" })} type='email' id='floating_email' className='block px-2.5 pb-2.5 pt-4 w-full text-sm bg-transparent rounded-lg border-1 border-gray-600 appearance-none text-white focus:border-blue-500 focus:outline-none focus:ring-0 peer' placeholder=' ' required />
 						<label
 							htmlFor='floating_email'
-							className='absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-[#181923] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1'
+							className='absolute text-sm text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3.5 z-10 origin-[0] bg-gray-800 px-2  peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 left-1'
 						>
 							Email
 						</label>
@@ -74,16 +69,12 @@ function Signin() {
 					</div>
 
 					<div className='relative mt-4'>
-						<input
-							{...register("password", { required: "Password is required" })}
+						<input 							{...register("password", { required: "Password is required" })}
 							type={passwordVisible ? "text" : "password"}
-							id='floating_password'
-							className='block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer'
-							placeholder=' '
-						/>
+							id='floating_password'className='block px-2.5 pb-2.5 pt-4 w-full text-sm bg-transparent rounded-lg border-1 border-gray-600 appearance-none text-white focus:border-blue-500 focus:outline-none focus:ring-0 peer' placeholder=' ' required />
 						<label
 							htmlFor='floating_password'
-							className='absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-[#181923] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1'
+							className='absolute text-sm text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3.5 z-10 origin-[0] bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 left-1'
 						>
 							Password
 						</label>
@@ -92,25 +83,25 @@ function Signin() {
 							{/* SVG for password visibility toggle */}
 						</span>
 					</div>
-					<button type='submit' className='w-full mt-8 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75' disabled={loading}>
+
+					<button type='submit' className='w-full mt-6 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50'disabled={loading}>
 						{loading ? (
 							<>
 								Signing in <PulseLoader color='#f3f4f6' size={8} />
 							</>
 						) : (
 							"Sign in"
-						)}
-					</button>
-					<p className='mt-4 text-center text-sm text-gray-500 dark:text-gray-300'>
+						)}					</button>
+					<p className='mt-4 text-center text-sm text-gray-300'>
 						Don't have an account?{" "}
-						<Link to='/signup' className='underline text-blue-600 dark:text-indigo-400'>
+						<Link to='/signup' className='underline text-indigo-400'>
 							Sign up
 						</Link>
 					</p>
 				</form>
 			</div>
 		</div>
-	) 
+	);
 }
 
 export default Signin;

@@ -70,9 +70,9 @@ const Sidebar = ({ onChatClick }) => {
 				<OtherUserList onChatClick={onChatClick} />
 			</div>
 			<div className='mt-4 flex items-center justify-between gap-4'>
-				<div className="flex items-center max-w-xs w-36 justify-between">
+				<div className="flex items-center max-w-xs w-fit justify-between">
 				<img src={authUserData?.profilePhoto} alt="User Avatar" className='w-10 h-10 rounded-full' />
-				<div className="flex flex-col mr-3">
+				<div className="flex flex-col ml-3">
 				<span className='text-white text-base font-medium'>{authUserData?.fullname}</span>
 				<span className='text-white text-xs'> @{authUserData?.username}</span>
 				</div>
