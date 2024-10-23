@@ -50,7 +50,7 @@ function Signup() {
 
     return (
     <div className='min-h-screen flex items-center justify-center bg-gray-900'>
-      <div className='bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md'>
+      <div className='bg-gray-800 mx-4 p-8 rounded-lg shadow-lg w-full max-w-md -translate-y-3'>
         <div className='text-center'>
           <p className='text-2xl text-white'>Welcome to Ripple</p>
           <p className='text-gray-400 mt-5'>Sign up to get started</p>
@@ -167,6 +167,12 @@ function Signup() {
           </p>
         </form>
       </div>
+      <span className='text-sm mx-auto text-center text-gray-400 absolute bottom-0 '>
+                <a href='https://github.com/heyswayam' className='hover:underline'>
+                    <span>Made with</span>
+                    <span className='font-handwriting text-lg text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-pink-500 to-purple-500'> Love </span> <span>by Swayam</span>
+                </a>
+            </span>	
     </div>
     );
 }
