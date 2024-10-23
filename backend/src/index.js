@@ -8,7 +8,7 @@ connectDB()
     server.listen(process.env.PORT || 8000, () => {
       console.log(`⚙️ Server is running at port : ${process.env.PORT}`);
       app.on("error",(err)=>{
-        console.log(`Encountered some error in the index: ${err}`);
+        console.log(`Encountered some error in the index file: ${err}`);
       })
     });
     
