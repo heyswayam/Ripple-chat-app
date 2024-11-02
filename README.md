@@ -32,54 +32,58 @@ Ripple is a modern real-time chat application built with React and Node.js, enab
 -   JWT (Authentication)
 -   Bcrypt (Password Hashing)# API Reference
 
-## Authentication Endpoints
+Let me create an API reference for your backend endpoints.
 
-### Register User
+## API Reference
+
+### Authentication Endpoints
+
+#### Register User
 ```http
-POST /api/register
+POST /user/register
 ```
 | Body Parameter | Type     | Description                |
 | :--------      | :------- | :------------------------- |
 | `username`     | `string` | **Required**. Username for new account |
 | `password`     | `string` | **Required**. Password for new account |
 
-### Login
+#### Login
 ```http
-POST /api/login
+POST /user/login
 ```
 | Body Parameter | Type     | Description                |
 | :--------      | :------- | :------------------------- |
 | `username`     | `string` | **Required**. Your username |
 | `password`     | `string` | **Required**. Your password |
 
-### Logout
+#### Logout
 ```http
-POST /api/logout
+POST /user/logout
 ```
 | Cookie         | Type     | Description                |
 | :--------      | :------- | :------------------------- |
 | `accessToken`  | `string` | **Required**. JWT access token |
 | `refreshToken` | `string` | **Required**. JWT refresh token |
 
-### Refresh Token
+#### Refresh Token
 ```http
-POST /api/refresh-token
+POST /user/refresh-token
 ```
 | Cookie         | Type     | Description                |
 | :--------      | :------- | :------------------------- |
 | `refreshToken` | `string` | **Required**. JWT refresh token |
 
-### Check Authentication Status
+#### Check Authentication Status
 ```http
-GET /api/check-auth
+GET /user/check-auth
 ```
 | Cookie         | Type     | Description                |
 | :--------      | :------- | :------------------------- |
 | `accessToken`  | `string` | **Required**. JWT access token |
 
-### Change Password
+#### Change Password
 ```http
-POST /api/change-password
+POST /user/change-password
 ```
 | Parameter      | Type     | Description                |
 | :--------      | :------- | :------------------------- |
@@ -88,19 +92,19 @@ POST /api/change-password
 | Cookie         | Type     | Description                |
 | `accessToken`  | `string` | **Required**. JWT access token |
 
-### Get Other Users
+#### Get Other Users
 ```http
-GET /api/other-users
+GET /user/other-users
 ```
 | Cookie         | Type     | Description                |
 | :--------      | :------- | :------------------------- |
 | `accessToken`  | `string` | **Required**. JWT access token |
 
-## Message Endpoints
+### Message Endpoints
 
-### Send Message
+#### Send Message
 ```http
-POST /api/send/:senderId/:receiverId
+POST /message/send/:senderId/:receiverId
 ```
 | Parameter      | Type     | Description                |
 | :--------      | :------- | :------------------------- |
@@ -110,9 +114,9 @@ POST /api/send/:senderId/:receiverId
 | Cookie         | Type     | Description                |
 | `accessToken`  | `string` | **Required**. JWT access token |
 
-### Get Messages
+#### Get Messages
 ```http
-GET /api/get/:senderId/:receiverId
+GET /message/get/:senderId/:receiverId
 ```
 | Parameter      | Type     | Description                |
 | :--------      | :------- | :------------------------- |
@@ -121,13 +125,89 @@ GET /api/get/:senderId/:receiverId
 | Cookie         | Type     | Description                |
 | `accessToken`  | `string` | **Required**. JWT access token |
 
-## Authentication Notes
-
-- All endpoints except `/register` and `/login` require authentication via JWT tokens
+### Authentication Notes
+- All endpoints except `/user/register` and `/user/login` require authentication via JWT tokens
 - Tokens are handled via HTTP-only cookies
 - Access token is used for regular authentication
 - Refresh token is used to obtain new access tokens when they expire
 - Both tokens are automatically managed by the authentication middleware
+
+### Socket.IO Integration
+The backend includes Socket.IO support for real-time messaging and user status:
+
+#### Connection Setup
+- **Connection URL**: Same as REST API base URL
+- **Authentication**: Connect with userId in query parameters
+- **Connection Options**:
+  ```javascript
+  {
+    withCredentials: true,
+    query: {
+      userId: "your_user_id"
+    }
+  }
+  ```
+
+#### Events
+
+##### Client to Server Events
+1. **setup**
+   - Emitted when user connects
+   - Payload: `userId` (string)
+   ```javascript
+   socket.emit('setup', userId)
+   ```
+
+2. **sendMessage**
+   - Emitted when sending a new message
+   ```javascript
+   socket.emit('sendMessage', {
+     senderId: 'string',
+     receiverId: 'string',
+     message: 'string'
+   })
+   ```
+
+##### Server to Client Events
+1. **newMessage**
+   - Received when a new message arrives
+   ```javascript
+   {
+     _id: 'string',
+     senderId: 'string',
+     receiverId: 'string',
+     message: 'string',
+     createdAt: Date,
+     updatedAt: Date
+   }
+   ```
+
+2. **messageError**
+   - Received when there's an error with message delivery
+   ```javascript
+   {
+     tempId: 'string',
+     error: 'string'
+   }
+   ```
+
+#### Message Flow
+1. Client emits `sendMessage`
+2. Server immediately sends acknowledgment
+3. Server saves message to database
+4. Server emits `newMessage` to receiver if online
+5. If database save fails, server emits `messageError`
+
+#### Error Handling
+- Socket connection errors return error events
+- Message delivery failures trigger messageError events
+- Database operation failures are handled gracefully with error notifications
+
+### CORS Configuration
+- API supports CORS with credentials
+- Allowed origins configured via CORS_ORIGIN environment variable
+- Supports both HTTP and Socket.IO connections
+- Same-site cookie policy set to 'None' for cross-origin requests
 ## Environment Variables
 
 ### Backend
@@ -202,3 +282,11 @@ npm run dev
 -   TailwindCSS for the excellent styling framework
 -   Socket.io for real-time communication capabilities
 -   MongoDB for the reliable database solution
+
+
+
+
+
+
+
+
