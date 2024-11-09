@@ -25,12 +25,36 @@ const generateAccessTokenandRefreshToken = async (userId) => {
 	}
 };
 
+const generateAvatarUrl = (username, gender) => {
+    // Primary URL using DiceBear
+    const primaryUrl = `https://api.dicebear.com/7.x/${gender === 'male' ? 'avataaars' : 'lorelei'}/svg?seed=${username}`;
+    
+    // Fallback URLs
+    const fallbackUrls = {
+        male: [
+            `https://api.dicebear.com/7.x/bottts/svg?seed=${username}`,
+            `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`,
+            `https://ui-avatars.com/api/?name=${username}&background=random`
+        ],
+        female: [
+            `https://api.dicebear.com/7.x/micah/svg?seed=${username}`,
+            `https://api.dicebear.com/7.x/adventurer/svg?seed=${username}`,
+            `https://ui-avatars.com/api/?name=${username}&background=random`
+        ]
+    };
+
+    return {
+        primaryUrl,
+        fallbackUrls: fallbackUrls[gender]
+    };
+};
+
 const registerUser = asyncHandler(async (req, res) => {
 	// console.log(req.body);
 	const { username, fullname, email, password, gender } = req.body;
-
-	const maleProfilePhoto = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-	const femaleProfilePhoto = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+	// const maleProfilePhoto = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+	// const femaleProfilePhoto = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+	const { primaryUrl } = generateAvatarUrl(username, gender);
 	///// check if user already exists
 	const existedUser = await User.findOne({
 		$or: [{ username }, { email }],
@@ -46,7 +70,8 @@ const registerUser = asyncHandler(async (req, res) => {
 		fullname,
 		email,
 		password,
-		profilePhoto: gender === "male" ? maleProfilePhoto : femaleProfilePhoto,
+		profilePhoto: primaryUrl,
+		// profilePhoto: gender === "male" ? maleProfilePhoto : femaleProfilePhoto,
 		gender,
 	});
 	const createdUser = await User.findById(userInstance._id).select("-password "); // select the attributes you dont wanna send
