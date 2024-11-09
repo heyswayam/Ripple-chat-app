@@ -47,9 +47,12 @@ const verifyJWTToken = asyncHandler(async (req, res, next) => {
 			await user.save({ validateBeforeSave: false });
 
 			const options = {
-				httpOnly: true,
-				secure: true,
-				sameSite: "None",
+				httpOnly: true,           // Prevents client-side access to the cookie
+				secure: process.env.NODE_ENV === 'production', // Secure in production only
+				sameSite: 'None',        // Allows cross-site requests
+				partitioned: true,       // For Firefox CHIPS (Cookie Having Independent Partitioned State)
+				path: '/',              // Cookie accessible from all paths
+				priority: 'high',        // Cookie priority hint
 			};
 			console.log("used 2nd ifelse");
 

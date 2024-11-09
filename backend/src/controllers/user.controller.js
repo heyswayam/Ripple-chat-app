@@ -74,9 +74,12 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 
     const options = {
-        httpOnly: true,
-        secure: true,
-		sameSite: 'None'
+		httpOnly: true,           // Prevents client-side access to the cookie
+		secure: process.env.NODE_ENV === 'production', // Secure in production only
+		sameSite: 'None',        // Allows cross-site requests
+		partitioned: true,       // For Firefox CHIPS (Cookie Having Independent Partitioned State)
+		path: '/',              // Cookie accessible from all paths
+		priority: 'high',        // Cookie priority hint
     };
 
     return res
@@ -111,9 +114,12 @@ const logoutUser = asyncHandler(async (req, res) => {
 	currentUser.refreshToken = undefined;
 	await currentUser.save({ validateBeforeSave: false });
 	const options = {
-		secure: true,
-		httpOnly: true,
-		sameSite: 'None'
+		httpOnly: true,           // Prevents client-side access to the cookie
+		secure: process.env.NODE_ENV === 'production', // Secure in production only
+		sameSite: 'None',        // Allows cross-site requests
+		partitioned: true,       // For Firefox CHIPS (Cookie Having Independent Partitioned State)
+		path: '/',              // Cookie accessible from all paths
+		priority: 'high',        // Cookie priority hint
 	};
 
 	return res.status(200).clearCookie("accessToken", options).clearCookie("refreshToken", options).json(new ApiResponse(200, {}, "User logged out successfully"));
@@ -128,10 +134,12 @@ const updateRefreshandAccessToken = asyncHandler(async (req, res) => {
 	//new accessToken and refreshToken is generated
 	const { accessToken, refreshToken } = await generateAccessTokenandRefreshToken(user._id);
 	const option = {
-		//to prevent tampering with cookies at client side
-		httpOnly: true,
-		secure: true,
-		sameSite: 'None'
+		httpOnly: true,           // Prevents client-side access to the cookie
+		secure: process.env.NODE_ENV === 'production', // Secure in production only
+		sameSite: 'None',        // Allows cross-site requests
+		partitioned: true,       // For Firefox CHIPS (Cookie Having Independent Partitioned State)
+		path: '/',              // Cookie accessible from all paths
+		priority: 'high',        // Cookie priority hint
 	};
 	res.status(200).cookie("accessToken", accessToken, option).cookie("refreshToken", refreshToken, option).json(
 		new ApiResponse(
