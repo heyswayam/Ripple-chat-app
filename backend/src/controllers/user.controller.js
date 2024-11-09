@@ -74,12 +74,12 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 
     const options = {
-		httpOnly: true,           // Prevents client-side access to the cookie
-		secure: process.env.NODE_ENV === 'production', // Secure in production only
-		sameSite: 'None',        // Allows cross-site requests
-		partitioned: true,       // For Firefox CHIPS (Cookie Having Independent Partitioned State)
-		path: '/',              // Cookie accessible from all paths
-		priority: 'high',        // Cookie priority hint
+		httpOnly: true,           // Prevents client-side access
+		secure: true,            // Required when SameSite=None
+		sameSite: 'None',        // For cross-origin requests
+		partitioned: true,       // For Firefox CHIPS
+		path: '/',              // Accessible from all paths
+		priority: 'high' 
     };
 
     return res
@@ -115,7 +115,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 	await currentUser.save({ validateBeforeSave: false });
 	const options = {
 		httpOnly: true,           // Prevents client-side access to the cookie
-		secure: process.env.NODE_ENV === 'production', // Secure in production only
+		secure: true, // Secure in production only
 		sameSite: 'None',        // Allows cross-site requests
 		partitioned: true,       // For Firefox CHIPS (Cookie Having Independent Partitioned State)
 		path: '/',              // Cookie accessible from all paths
@@ -135,7 +135,7 @@ const updateRefreshandAccessToken = asyncHandler(async (req, res) => {
 	const { accessToken, refreshToken } = await generateAccessTokenandRefreshToken(user._id);
 	const option = {
 		httpOnly: true,           // Prevents client-side access to the cookie
-		secure: process.env.NODE_ENV === 'production', // Secure in production only
+		secure: true, // Secure in production only
 		sameSite: 'None',        // Allows cross-site requests
 		partitioned: true,       // For Firefox CHIPS (Cookie Having Independent Partitioned State)
 		path: '/',              // Cookie accessible from all paths
