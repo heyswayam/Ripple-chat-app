@@ -35,7 +35,7 @@ const Chat = () => {
     };
 
     return (
-        <div className='flex h-screen rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
+        <div className='flex h-[100dvh] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
             <div className={`w-full sm:w-6/12 ${showSidebar ? 'block' : 'hidden'} sm:block`}>
                 <Sidebar onChatClick={handleChatClick} />
             </div>
