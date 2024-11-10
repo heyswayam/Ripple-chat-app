@@ -53,7 +53,7 @@ const SendInput = () => {
 
     return (
         <form onSubmit={onSubmitHandler}>
-            <div className='w-full relative'>
+            <div className='w-full relative overflow-hidden'>
                 <input
                     value={message}
                     type='text'

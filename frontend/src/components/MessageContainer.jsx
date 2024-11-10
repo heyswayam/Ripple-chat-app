@@ -10,7 +10,7 @@ const MessageContainer = ({ onBackClick }) => {
 	return (
 		<>
 			{selectedUser !== null ? (
-				<div className='w-full flex flex-col h-full bg-gray-900'>
+				<div className='w-full flex flex-col h-full bg-gray-900 overflow-hidden'>
 					<div className='flex gap-2 items-center bg-gray-800 text-white px-4 py-2 mb-2 shadow-md'>
 						<div className={`avatar ${isOnline ? "online" : ""}`}>
 							<div className='w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2'>
