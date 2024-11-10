@@ -5,12 +5,10 @@ import MessageContainer from "../components/MessageContainer";
 import Sidebar from "../components/Sidebar";
 import { setOnlineUsers } from "../context/userSlice";
 import io from "socket.io-client";
-import { setSocket } from "../context/socketSlice";
 import conf_env from "../conf_env/conf_env";
 
 const Chat = () => {
     const { authUserData } = useSelector((store) => store.user);
-    const { socket } = useSelector((store) => store.socket);
     const dispatch = useDispatch();
     const [showSidebar, setShowSidebar] = useState(true);
 
@@ -21,17 +19,10 @@ const Chat = () => {
                     userId: authUserData._id,
                 },
             });
-            dispatch(setSocket(socketio));
-
             socketio?.on("getOnlineUsers", (onlineUsers) => {
                 dispatch(setOnlineUsers(onlineUsers));
             });
             return () => socketio.close();
-        } else {
-            if (socket) {
-                socket.close();
-                dispatch(setSocket(null));
-            }
         }
     }, [authUserData, dispatch]);
 
