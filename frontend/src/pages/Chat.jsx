@@ -35,22 +35,22 @@ const Chat = () => {
 
     }, [authUserData, dispatch]);
 
-    useEffect(() => {
-        const handleResize = () => {
-            // Get actual visible height
-            const height = window.visualViewport?.height || window.innerHeight;
-            document.documentElement.style.setProperty('--vh', `${height * 0.01}px`);
-        };
+    // useEffect(() => {
+    //     const handleResize = () => {
+    //         // Get actual visible height
+    //         const height = window.visualViewport?.height || window.innerHeight;
+    //         document.documentElement.style.setProperty('--vh', `${height * 0.01}px`);
+    //     };
 
-        handleResize();
-        window.visualViewport?.addEventListener('resize', handleResize);
-        window.visualViewport?.addEventListener('scroll', handleResize);
+    //     handleResize();
+    //     window.visualViewport?.addEventListener('resize', handleResize);
+    //     window.visualViewport?.addEventListener('scroll', handleResize);
 
-        return () => {
-            window.visualViewport?.removeEventListener('resize', handleResize);
-            window.visualViewport?.removeEventListener('scroll', handleResize);
-        };
-    }, []);
+    //     return () => {
+    //         window.visualViewport?.removeEventListener('resize', handleResize);
+    //         window.visualViewport?.removeEventListener('scroll', handleResize);
+    //     };
+    // }, []);
 
     const handleChatClick = () => {
         setShowSidebar(false);
@@ -62,8 +62,11 @@ const Chat = () => {
 
     return (
         <div 
-            className='flex rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 max-h-screen'
-            style={{ height: 'calc(var(--vh, 1vh) * 100)' }}
+            className='flex rounded-lg bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 fixed inset-0'
+            style={{ 
+                height: 'calc(var(--vh, 1vh) * 100)',
+                maxHeight: 'calc(var(--vh, 1vh) * 100)',
+            }}
         >
             <div className={`w-full sm:w-6/12 ${showSidebar ? 'block' : 'hidden'} sm:block h-full overflow-hidden`}>
                 <Sidebar onChatClick={handleChatClick} />
