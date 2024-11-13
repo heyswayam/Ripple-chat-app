@@ -13,7 +13,6 @@ const Chat = () => {
     const dispatch = useDispatch();
     const { socket } = useSelector((store) => store.socket);
     const [showSidebar, setShowSidebar] = useState(true);
-    const [viewportHeight, setViewportHeight] = useState('100dvh');
 
     useEffect(() => {
         if (authUserData) {
@@ -38,14 +37,12 @@ const Chat = () => {
 
     useEffect(() => {
         const handleResize = () => {
+            // Get actual visible height
             const height = window.visualViewport?.height || window.innerHeight;
-            setViewportHeight(`${height}px`);
+            document.documentElement.style.setProperty('--vh', `${height * 0.01}px`);
         };
 
-        // Initial height
         handleResize();
-
-        // Listen to viewport changes (handles virtual keyboard)
         window.visualViewport?.addEventListener('resize', handleResize);
         window.visualViewport?.addEventListener('scroll', handleResize);
 
@@ -65,13 +62,13 @@ const Chat = () => {
 
     return (
         <div 
-            className='flex rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'
-            style={{ height: viewportHeight }}
+            className='flex rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0 max-h-screen'
+            style={{ height: 'calc(var(--vh, 1vh) * 100)' }}
         >
-            <div className={`w-full sm:w-6/12 ${showSidebar ? 'block' : 'hidden'} sm:block`}>
+            <div className={`w-full sm:w-6/12 ${showSidebar ? 'block' : 'hidden'} sm:block h-full overflow-hidden`}>
                 <Sidebar onChatClick={handleChatClick} />
             </div>
-            <div className={`w-full ${showSidebar ? 'hidden' : 'block'} sm:block `}>
+            <div className={`w-full ${showSidebar ? 'hidden' : 'block'} sm:block h-full overflow-hidden`}>
                 <MessageContainer onBackClick={handleBackClick} />
             </div>
         </div>
