@@ -2,10 +2,11 @@ import React from "react";
 import SendInput from "./SendInput";
 import MessageList from "./MessageList";
 import { useSelector } from "react-redux";
-
+import { PulseLoader } from "react-spinners";
 const MessageContainer = ({ onBackClick }) => {
-	const { selectedUser, authUserData, onlineUsers } = useSelector((store) => store.user);
+	const { selectedUser, authUserData, onlineUsers, typingUsers } = useSelector((store) => store.user);
 	const isOnline = onlineUsers?.includes(selectedUser?._id);
+	const isTyping = typingUsers[selectedUser?._id];
 
 	return (
 		<>
@@ -14,12 +15,20 @@ const MessageContainer = ({ onBackClick }) => {
 					<div className='flex gap-2 items-center bg-gray-800 text-white px-4 py-2 mb-2 shadow-md'>
 						<div className={`avatar ${isOnline ? "online" : ""}`}>
 							<div className='w-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2'>
-								<img src={selectedUser?.profilePhoto} alt='user-profile' className='rounded-full'/>
+								<img src={selectedUser?.profilePhoto} alt='user-profile' className='rounded-full' />
 							</div>
 						</div>
-						<div className='w-full'>
+						<div className='w-full ml-1'>
 							<div className='flex justify-between gap-2 items-center'>
-								<p className='text-lg font-semibold'>{selectedUser?.fullname}</p>
+								<div>
+									<p className='text-lg font-semibold'>{selectedUser?.fullname}</p>
+									{isTyping && (
+										<div className='flex items-baseline gap-0.5'>
+											<span className='text-sm text-blue-400 '>typing</span>
+											<PulseLoader color='#60a5fa' size={4} speedMultiplier={0.8} />
+										</div>
+									)}
+								</div>
 								{isOnline && <div className='text-sm text-green-500'>Online</div>}
 							</div>
 						</div>
@@ -36,8 +45,8 @@ const MessageContainer = ({ onBackClick }) => {
 				</div>
 			) : (
 				<div className='w-full flex flex-col justify-center items-center h-full bg-gray-900'>
-					<h1 className='text-4xl text-white font-bold'>Hi, {authUserData?.fullname}</h1>
-					<h1 className='text-2xl text-white mt-2'>Let's start a conversation</h1>
+					<h1 className='text-4xl text-white font-bold text-center'>Hi, {authUserData?.fullname}</h1>
+					<h1 className='text-2xl text-white mt-2 text-center'>Let's start a conversation</h1>
 					<span className='text-sm mx-auto text-center text-gray-400 absolute bottom-0'>
 						<a href='https://github.com/heyswayam' className='hover:underline'>
 							<span>Made with</span>

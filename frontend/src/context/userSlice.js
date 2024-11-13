@@ -8,6 +8,7 @@ const userSlice = createSlice({
 		otherUsers: null,
 		selectedUser: null,
 		onlineUsers: null,
+		typingUsers: {}, // Add this line
 	},
 	reducers: {
 		login: (state, action) => {
@@ -29,7 +30,11 @@ const userSlice = createSlice({
 		setOnlineUsers: (state, action) => {
 			state.onlineUsers = action.payload;
 		},
+		setTypingStatus: (state, action) => {
+			const { userId, isTyping } = action.payload;
+			state.typingUsers[userId] = isTyping;
+		},
 	},
 });
-export const { setOtherUsers, setSelectedUser, setOnlineUsers, login, logout } = userSlice.actions;
+export const { setOtherUsers, setSelectedUser, setOnlineUsers, login, logout, setTypingStatus } = userSlice.actions;
 export default userSlice.reducer;

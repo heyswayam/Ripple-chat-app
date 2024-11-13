@@ -39,23 +39,35 @@ const io = new Server(server, {
     },
 });
 const userSocketMap = {}; // {userId: socketId}
+const typingUsers = {}; // { userId: boolean }
 
 export const getReceiverSocketId = (receiverId) => {
 	return userSocketMap[receiverId];
 };
 
-io.on("connection", (user) => {
+io.on("connection", (socket) => {
 	// console.log("New connection established:", user.id);
 	// console.log("User handshake query:", user.handshake.query);
 
-	const userId = user.handshake.query.userId;
+	const userId = socket.handshake.query.userId;
 	if (userId !== undefined) {
-		userSocketMap[userId] = user.id;
+		userSocketMap[userId] = socket.id;
 	}
 	io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
-	user.on("disconnect", () => {
+	socket.on("typing", ({ receiverId, isTyping }) => {
+        if (receiverId) {
+            typingUsers[userId] = isTyping;
+            const receiverSocketId = getReceiverSocketId(receiverId);
+            if (receiverSocketId) {
+                io.to(receiverSocketId).emit("typingStatus", { userId, isTyping });
+            }
+        }
+    });
+
+	socket.on("disconnect", () => {
 		delete userSocketMap[userId];
+		delete typingUsers[userId];
 		io.emit("getOnlineUsers", Object.keys(userSocketMap));
 	});
 });
