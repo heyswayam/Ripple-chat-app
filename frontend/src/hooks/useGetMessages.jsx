@@ -7,7 +7,6 @@ import { setLoader } from "../context/loaderSlice";
 
 const UseGetMessages = () => {
 	const { selectedUser, authUserData } = useSelector((store) => store.user);
-	const { conversations } = useSelector((store) => store.message);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -17,11 +16,7 @@ const UseGetMessages = () => {
 			const senderId = authUserData?._id;
 			const receiverId = selectedUser?._id;
 
-			// Check if we already have recent messages for this conversation
-			const existingConversation = conversations[receiverId];
-			const isFetchNeeded = !existingConversation || new Date() - new Date(existingConversation.lastFetched) > 60000; // Fetch if last fetch was more than 1 minute ago
 
-			if (isFetchNeeded) {
 				try {
 					dispatch(setLoader(true));
 					axios.defaults.withCredentials = true;
@@ -33,17 +28,16 @@ const UseGetMessages = () => {
 				} finally {
 					dispatch(setLoader(false));
 				}
-			}
 		};
 
 		fetchMessages();
-	}, [selectedUser, authUserData, dispatch, conversations]);
+	}, [selectedUser, authUserData, dispatch]);
 };
 export default UseGetMessages;
 
 
 
-///simplified useGetMessages without optmization// useGetMessages.jsx
+// /simplified useGetMessages without optmization// useGetMessages.jsx
 // import { useEffect } from 'react';
 // import axios from "axios";
 // import { useSelector, useDispatch } from "react-redux";

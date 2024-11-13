@@ -8,13 +8,13 @@ import io from "socket.io-client";
 import { setSocket } from "../context/socketSlice";
 import conf_env from "../conf_env/conf_env";
 
-
-
 const Chat = () => {
     const { authUserData } = useSelector((store) => store.user);
     const dispatch = useDispatch();
     const { socket } = useSelector((store) => store.socket);
     const [showSidebar, setShowSidebar] = useState(true);
+    const [viewportHeight, setViewportHeight] = useState('100dvh');
+
     useEffect(() => {
         if (authUserData) {
             const socketio = io(`${conf_env.backendURL}`, {
@@ -27,7 +27,7 @@ const Chat = () => {
                 dispatch(setOnlineUsers(onlineUsers));
             });
             return () => socketio.close();
-        }         else {
+        } else {
             if (socket) {
                 socket.close();
                 dispatch(setSocket(null));
@@ -36,6 +36,24 @@ const Chat = () => {
 
     }, [authUserData, dispatch]);
 
+    useEffect(() => {
+        const handleResize = () => {
+            const height = window.visualViewport?.height || window.innerHeight;
+            setViewportHeight(`${height}px`);
+        };
+
+        // Initial height
+        handleResize();
+
+        // Listen to viewport changes (handles virtual keyboard)
+        window.visualViewport?.addEventListener('resize', handleResize);
+        window.visualViewport?.addEventListener('scroll', handleResize);
+
+        return () => {
+            window.visualViewport?.removeEventListener('resize', handleResize);
+            window.visualViewport?.removeEventListener('scroll', handleResize);
+        };
+    }, []);
 
     const handleChatClick = () => {
         setShowSidebar(false);
@@ -46,7 +64,10 @@ const Chat = () => {
     };
 
     return (
-        <div className='flex h-[100dvh] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
+        <div 
+            className='flex rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'
+            style={{ height: viewportHeight }}
+        >
             <div className={`w-full sm:w-6/12 ${showSidebar ? 'block' : 'hidden'} sm:block`}>
                 <Sidebar onChatClick={handleChatClick} />
             </div>
